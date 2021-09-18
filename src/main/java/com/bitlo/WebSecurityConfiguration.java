@@ -43,12 +43,17 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        //TODO : This method all request authenticated disabled login not including
+        //TODO : This method all request authenticated disabled login exclude and when using h2-console must comment
         http.csrf().disable()
                 .authorizeRequests().antMatchers("/login").permitAll()
                 .anyRequest().authenticated()
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         http.addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
+
+        //TODO :when using h2-console must open
+      /*  http.csrf().disable().authorizeRequests().antMatchers("/").permitAll().and()
+                .authorizeRequests().antMatchers("/console/**").permitAll();
+        http.headers().frameOptions().disable();*/
     }
 }
