@@ -34,6 +34,12 @@ public class User implements Serializable {
     @Column(name = "email")
     private String email;
 
+    @Column(name = "create_date")
+    private LocalDateTime createDate = LocalDateTime.now();
+
+    @Column(name = "update_date")
+    private LocalDateTime updateDate;
+
     public User(String firstName, String lastName, String username, String password, String email) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -41,13 +47,4 @@ public class User implements Serializable {
         this.password = password;
         this.email = email;
     }
-
-    /*  @Column(name = "create_date")
-    private LocalDateTime createDate = LocalDateTime.now();
-
-    @Column(name = "update_date")
-    private LocalDateTime updateDate;*/
-
-
-
 }

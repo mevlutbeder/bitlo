@@ -1,30 +1,65 @@
 package com.bitlo.controller;
 
 import com.bitlo.model.User;
-import com.bitlo.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.bitlo.repository.UserRepository;
+import com.bitlo.utils.HeaderUtil;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
+import java.net.URISyntaxException;
 import java.util.List;
 
 @RestController
 public class UserController extends ApiController {
 
-    private final UserService userService;
+    private final UserRepository userRepository;
 
-    @Autowired
-    public UserController(UserService userService) {
-        this.userService = userService;
+    private static final String ENTITY_NAME = "User";
+
+    public UserController(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
-    @GetMapping(value = "/user")
-    public List<User> getAll() {
-        return getUser();
+    @GetMapping(value = "/users")
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
     }
 
-    public List<User> getUser() {
-        return userService.findAll();
+    @DeleteMapping("/user/{id}")
+    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
+        System.out.println("REST request to deleted " + ENTITY_NAME + " id : " + id);
+        userRepository.deleteById(id);
+        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+    }
+
+    @PutMapping("/user")
+    public ResponseEntity<User> updateUser(@RequestBody User user) throws URISyntaxException {
+        System.out.println("REST request to update " + ENTITY_NAME + " id : " + user);
+        if (user.getId() == null) {
+            return createUser(user);
+        }
+        User result = userRepository.save(user);
+        return ResponseEntity.ok().headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, user.getId().toString())).body(result);
+    }
+
+    @PostMapping("/user")
+    public ResponseEntity<User> createUser(@RequestBody User user) throws URISyntaxException {
+        System.out.println("REST request to save " + ENTITY_NAME);
+        if (user.getId() != null) {
+            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new user cannot already have an ID")).body(null);
+        }
+        User result = userRepository.save(user);
+        return ResponseEntity.ok().headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString())).body(result);
+    }
+
+    @GetMapping("/user/{id}")
+    public ResponseEntity<User> getUser(@PathVariable Long id) {
+        System.out.println("REST request to get " + ENTITY_NAME + " id : " + id);
+        User user = userRepository.findUserById(id);
+        if (user.getId() == null) {
+            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "User not have an ID")).body(null);
+        }
+        return ResponseEntity.ok().headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, user.getId().toString())).body(user);
     }
 
 }
