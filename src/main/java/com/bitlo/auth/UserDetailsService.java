@@ -15,21 +15,21 @@ import java.util.Map;
 @Service
 public class UserDetailsService implements org.springframework.security.core.userdetails.UserDetailsService {
 
-    private Map<String, String> users = new HashMap<>();
+    private Map<String, String> user = new HashMap<>();
 
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
     @PostConstruct
     public void init() {
-        users.put("mev", passwordEncoder.encode("123"));
-        users.put("beder", passwordEncoder.encode("123"));
+        user.put("mev", passwordEncoder.encode("123"));
+        user.put("beder", passwordEncoder.encode("123"));
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        if (users.containsKey(username)) {
-            return new User(username, users.get(username), new ArrayList<>());
+        if (user.containsKey(username)) {
+            return new User(username, user.get(username), new ArrayList<>());
         }
         throw new UsernameNotFoundException(username);
     }
