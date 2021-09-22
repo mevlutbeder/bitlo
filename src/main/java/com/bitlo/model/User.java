@@ -7,6 +7,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -39,6 +40,12 @@ public class User implements Serializable {
 
     @Column(name = "update_date")
     private LocalDateTime updateDate;
+
+    @Transient
+    private String passwordConfirm;
+
+    @ManyToMany
+    private Set<Role> roles;
 
     public User(String firstName, String lastName, String username, String password, String email) {
         this.firstName = firstName;
