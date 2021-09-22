@@ -6,12 +6,14 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
 @SpringBootApplication
+@EnableSwagger2
 public class UserWalletApplication {
 
     public static void main(String[] args) {
@@ -40,6 +42,8 @@ public class UserWalletApplication {
         currencies.add(new Currency("EUR","EURO"));
         currencies.add(new Currency("JPY","Japanese yen"));
         currencies.add(new Currency("TRY","Turkish Lira"));
+        currencies.add(new Currency("ETH","Ethereum"));
+        currencies.add(new Currency("BTC","Bitcoin"));
         currencyRepository.saveAll(currencies);
 
 

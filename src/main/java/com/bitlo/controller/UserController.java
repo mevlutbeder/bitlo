@@ -3,6 +3,8 @@ package com.bitlo.controller;
 import com.bitlo.model.User;
 import com.bitlo.repository.UserRepository;
 import com.bitlo.utils.HeaderUtil;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,6 +12,7 @@ import java.net.URISyntaxException;
 import java.util.List;
 
 @RestController
+@Api(value = "User Api documentation")
 public class UserController extends ApiController {
 
     private final UserRepository userRepository;
@@ -21,6 +24,7 @@ public class UserController extends ApiController {
     }
 
     @GetMapping(value = "/users")
+    @ApiOperation(value = "Get all User method")
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
@@ -43,6 +47,7 @@ public class UserController extends ApiController {
     }
 
     @PostMapping("/user")
+    @ApiOperation(value = "New User adding method")
     public ResponseEntity<User> createUser(@RequestBody User user) throws URISyntaxException {
         System.out.println("REST request to save " + ENTITY_NAME);
         if (user.getId() != null) {

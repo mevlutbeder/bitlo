@@ -1,5 +1,7 @@
 package com.bitlo.model;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,10 +15,12 @@ import java.time.LocalDateTime;
 @Setter
 @Table(name="user")
 @NoArgsConstructor
+@ApiModel(value = "User Api model documentation", description = "Model")
 public class User implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @ApiModelProperty(value = "Unique id field of user object")
     private Long id;
 
     @Column(name = "first_name")
