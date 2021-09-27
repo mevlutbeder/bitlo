@@ -4,32 +4,36 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
 @Setter
-@Table(name="currency")
+@Table(name = "currency")
 @NoArgsConstructor
 public class Currency implements Serializable {
 
     @Id
-    @Column(name = "id",nullable = false) //1
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    @Column(name = "name",nullable = false) // Eur
-    private String name;
+    @Column(name = "currency_code", nullable = false) // Eur
+    private String currencyCode;
 
-    public Currency(String id, String name) {
-        this.id = id;
-        this.name = name;
+    @Column(name = "description") // Eur
+    private String description;
+
+    @Column(name = "date_created")
+    private LocalDateTime dateCreated = LocalDateTime.now();
+
+    public Currency(String currencyCode, String description) {
+        this.currencyCode = currencyCode;
+        this.description = description;
     }
 
-    public Currency(String id) {
-        this.id = id;
+    public Currency(String currencyCode) {
+        this.currencyCode = currencyCode;
     }
 }

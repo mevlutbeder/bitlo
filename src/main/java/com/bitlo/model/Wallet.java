@@ -18,7 +18,7 @@ import java.util.List;
 public class Wallet implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "user_id")
@@ -31,11 +31,11 @@ public class Wallet implements Serializable {
     private List<Transaction> transactions;
 
     @ManyToOne
-    @JoinColumn(name = "currency_id")
+    @JoinColumn(name = "currency_code")
     private Currency currency;
 
-    @Column(name = "date")
-    private LocalDateTime date = LocalDateTime.now();
+    @Column(name = "date_created")
+    private LocalDateTime dateCreated = LocalDateTime.now();
 
     public Wallet(Long user_id, BigDecimal amount, List<Transaction> transactions, Currency currency) {
         this.user_id = user_id;
@@ -46,5 +46,11 @@ public class Wallet implements Serializable {
 
     public Wallet(Long id) {
         this.id = id;
+    }
+
+    public Wallet(long user_id, BigDecimal amount, Currency currency) {
+        this.user_id = user_id;
+        this.amount = amount;
+        this.currency = currency;
     }
 }

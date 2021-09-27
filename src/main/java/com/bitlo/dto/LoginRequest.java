@@ -1,4 +1,4 @@
-package com.bitlo.request;
+package com.bitlo.dto;
 
 import lombok.Getter;
 import lombok.Setter;

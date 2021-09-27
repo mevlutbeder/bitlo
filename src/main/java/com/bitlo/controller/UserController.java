@@ -5,6 +5,10 @@ import com.bitlo.repository.UserRepository;
 import com.bitlo.utils.HeaderUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,9 +28,10 @@ public class UserController extends ApiController {
     }
 
     @GetMapping(value = "/users")
-    @ApiOperation(value = "Get all User method")
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
+    @ApiOperation(value = "Get all Users pagination method")
+    public ResponseEntity<List<User>> getAllUsers(@ApiParam Pageable pageable) {
+        Page<User> page = userRepository.findAll(pageable);
+        return new ResponseEntity<>(page.getContent(), HttpStatus.OK);
     }
 
     @DeleteMapping("/user/{id}")

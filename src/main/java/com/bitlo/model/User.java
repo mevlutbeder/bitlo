@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @Setter
-@Table(name="user")
+@Table(name = "user")
 @NoArgsConstructor
 @ApiModel(value = "User Api model documentation", description = "Model")
 public class User implements Serializable {
@@ -38,11 +38,11 @@ public class User implements Serializable {
     @Column(name = "email")
     private String email;
 
-    @Column(name = "create_date")
-    private LocalDateTime createDate = LocalDateTime.now();
+    @Column(name = "date_created")
+    private LocalDateTime dateCreated = LocalDateTime.now();
 
-    @Column(name = "update_date")
-    private LocalDateTime updateDate;
+    @Column(name = "date_updated")
+    private LocalDateTime dateUpdated;
 
     public User(String firstName, String lastName, String username, String password, String email) {
         this.firstName = firstName;

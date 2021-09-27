@@ -4,11 +4,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -18,18 +16,21 @@ import java.io.Serializable;
 public class TransactionType implements Serializable {
 
     @Id
-    @Column(name = "id",nullable = false, unique = true) //C D
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    @Column(name = "name", nullable = false) //Credit & Debit
-    private String name;
+    @Column(name = "type", nullable = false) //C & D
+    private String type;
 
-    public TransactionType(String id, String name) {
-        this.id = id;
-        this.name = name;
+    @Column(name = "description") //Credit & Debit
+    private String description;
+
+    @Column(name = "date_created")
+    private LocalDateTime dateCreated = LocalDateTime.now();
+
+    public TransactionType(String type, String description) {
+        this.type = type;
+        this.description = description;
     }
 
-    public TransactionType(String id) {
-        this.id = id;
-    }
 }

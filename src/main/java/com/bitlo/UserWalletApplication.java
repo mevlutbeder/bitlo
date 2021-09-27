@@ -33,8 +33,8 @@ public class UserWalletApplication {
         users.add(new User("Mevlüt", "Beder", "mevlut1", encoder.encode("123"), "mev@bitlo.com"));
         users.add(new User("Ahmet", "Demir", "ahmet1", encoder.encode("1234"), "ahmet@bitlo.com"));
         users.add(new User("Mehmet", "Çelik", "mehmet1", encoder.encode("12345"), "mehmet@bitlo.com"));
-
         userRepository.saveAll(users);
+
 
         //Mock Currency
         List<Currency> currencies = new ArrayList<>();
@@ -47,14 +47,6 @@ public class UserWalletApplication {
         currencyRepository.saveAll(currencies);
 
 
-        //Mock wallet
-        List<Wallet> wallets = new ArrayList<>();
-        wallets.add(new Wallet(1L,new BigDecimal(15.20),null,new Currency("USD")));
-        wallets.add(new Wallet(1L,new BigDecimal(45.50),null,new Currency("EUR")));
-        wallets.add(new Wallet(2L,new BigDecimal(20.50),null,new Currency("EUR")));
-        walletRepository.saveAll(wallets);
-
-
         //Mock TransactionType
         List<TransactionType> transactionTypes = new ArrayList<>();
         transactionTypes.add(new TransactionType("C","CREDIT"));
@@ -62,12 +54,21 @@ public class UserWalletApplication {
         transactionTypeRepository.saveAll(transactionTypes);
 
 
-        List<Transaction> transactions = new ArrayList<>();
+        //Mock wallet
+        List<Wallet> wallets = new ArrayList<>();
+        wallets.add(new Wallet(1L,new BigDecimal(15.20),currencyRepository.getByCurrencyCode("USD")));
+        wallets.add(new Wallet(1L,new BigDecimal(45.50),currencyRepository.getByCurrencyCode("EUR")));
+        wallets.add(new Wallet(2L,new BigDecimal(20.50),currencyRepository.getByCurrencyCode("USD")));
+        walletRepository.saveAll(wallets);
 
-        transactions.add(new Transaction(new BigDecimal(22.5),new TransactionType("C"),new Wallet(1L),new Currency("EUR"),1L,2L,"add money"));
+
+        //Mock Transaction
+        List<Transaction> transactions = new ArrayList<>();
+        transactions.add(new Transaction(new BigDecimal(22.5),transactionTypeRepository.findAllByType("C"),new Wallet(1L),currencyRepository.getByCurrencyCode("EUR"),1L,2L,"add money"));
         transactionRepository.saveAll(transactions);
 
 
+        //tokenManager.generateToken("mevlut1")
 
         //encoder.matches("123", user.getPassword());
 

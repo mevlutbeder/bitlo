@@ -32,7 +32,7 @@ public class Transaction implements Serializable {
     private Wallet wallet;
 
     @ManyToOne
-    @JoinColumn(name = "currency_id")
+    @JoinColumn(name = "currency_code")
     private Currency currency;
 
     @Column(name = "sender_id")
@@ -41,8 +41,8 @@ public class Transaction implements Serializable {
     @Column(name = "receiver_id")
     private Long receiverId;
 
-    @Column(name = "date")
-    private LocalDateTime date = LocalDateTime.now();
+    @Column(name = "date_created")
+    private LocalDateTime dateCreated = LocalDateTime.now();
 
     @Column(name = "status")
     private String status;
@@ -55,5 +55,9 @@ public class Transaction implements Serializable {
         this.senderId = senderId;
         this.receiverId = receiverId;
         this.status = status;
+    }
+
+    public Transaction(Long id) {
+        this.id = id;
     }
 }

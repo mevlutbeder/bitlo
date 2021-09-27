@@ -47,8 +47,17 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         //TODO : This method all request authenticated disabled login exclude and when using h2-console must comment
         http.csrf().disable()
-                .authorizeRequests().antMatchers("/login").permitAll()
-                .antMatchers("/api/**").authenticated()
+                .formLogin()
+                .loginPage("/login")
+                .failureUrl("/login-error.html")
+                .and()
+                .logout()
+                .logoutSuccessUrl("/")
+                .and()
+                .authorizeRequests()
+                .antMatchers("/css/**", "/js/**", "/img/**").permitAll()
+                .antMatchers("/login").permitAll()
+                .anyRequest().authenticated()
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         http.addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
@@ -59,6 +68,8 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         web.ignoring()
                 .antMatchers(HttpMethod.OPTIONS, "/**")
                 .antMatchers("/login",
+                        "/",
+                        "/welcome",
                         "/v2/api-docs",
                         "/configuration/ui",
                         "/swagger-resources/**",
